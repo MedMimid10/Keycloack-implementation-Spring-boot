@@ -5,9 +5,10 @@
   <title>Secured View</title>
 </head>
 <body>
-<h1>Secured View by keycloak</h1>
-<p>This is a secured view.</p>
 
+<h1>Secured View by keycloak</h1>
+<h1>This is a secured view.</h1>
+The username account: <h1 th:text="${username}"></h1>
 <a href="/logout" class="btn btn-primary">Click here to logout</a>
 <!--<a th:href="@{/logout}" class="btn btn-primary">Logout</a>-->
 </body>
