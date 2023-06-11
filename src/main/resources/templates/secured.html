@@ -499,7 +499,7 @@
                 <label th:for="${task.id}" th:text="${task.name}"></label>
             </div>
             <div class="date-delete">
-            <span  th:text="${#dates.format(task.date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+            <span  th:text="${#dates.format(task.date, 'yyyy-MM-dd HH:mm')}"></span>
             <a th:href="${'/task/'+task.id}" class="edit-btn" >Edit</a>
             <button class="delete-btn" th:onclick="deleteTask(/*[[${task.id}]]*/)">Delete</button>
             </div>
@@ -572,6 +572,22 @@
     }
 
 
+    const img = "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg";
+    const text = "Take a look at this brand new t-shirt!";
+    const title = "New Product Available";
+    const options = {
+        body: text,
+        icon: "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg",
+        vibrate: [200, 100, 200],
+        tag: "new-product",
+        image: img,
+        badge: "https://spyna.it/icons/android-icon-192x192.png",
+        actions: [{ action: "Detail", title: "View", icon: "https://via.placeholder.com/128/ff0000" }]
+    };
+
+    navigator.serviceWorker.ready.then(function(serviceWorker) {
+        serviceWorker.showNotification(title, options);
+    });
 
 </script>
 <!--<a th:href="@{/logout}" class="btn btn-primary">Logout</a>-->
