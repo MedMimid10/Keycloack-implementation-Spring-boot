@@ -1,11 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>NotSecured view</title>
+    <title>DoIt!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@100;400;500;700;900&display=swap');
+        .explore-btn{
+            font-size: 2rem;
+            background: transparent;
+            border: none;
+            padding: 1em 1.5em;
+            color: black;
+            text-transform: uppercase;
+            position: relative;
+            transition: .5s ease;
+            z-index: 200;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .explore-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 0;
+            background-color: #b4a3ff;
+            transition: .5s ease;
+
+        }
+
+        .explore-btn:hover {
+            color: white;
+            transition-delay: .5s;
+        }
+
+        .explore-btn:hover::before {
+            width: 100%;
+        }
+
+        .explore-btn::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0;
+            width: 100%;
+            background-color: #b4a3ff;
+            transition: .4s ease;
+            z-index: -1;
+        }
+
+        .explore-btn:hover::after {
+            height: 100%;
+            transition-delay: 0.4s;
+            color: aliceblue;
+        }
+        :root{
+            font-family: "Montserrat"
+        }
+        body{
+            background-color: #b4a3ff;
+            margin: 0;
+        }
+        input {
+            font-family: "Montserrat",serif;
+            font-synthesis: weight;
+        }
+
+        .header{
+            display: flex;
+            padding: 1.2rem 2rem;
+            gap:1.2rem;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            position:sticky;
+            top:0;
+            z-index: 999;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 0px 6px 38px -4px rgba(0,0,0,0.67);
+            -webkit-box-shadow: 0px 6px 38px -4px rgba(0,0,0,0.67);
+            -moz-box-shadow: 0px 6px 38px -4px rgba(0,0,0,0.67);
+        }
+        .header-end{
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .logout-btn{
+            background-color: #b4a3ff;
+            text-decoration: none;
+            color:white;
+            padding: 0.6rem 0rem;
+            width: 6rem;
+            text-align: center;
+            border-radius: 1.5rem;
+            transition-duration: 0.3s;
+        }
+        .logout-btn:hover{
+            background-color: #7668b3;
+            font-weight: bold;
+        }
+
+        .title > span{
+            color: #4f29f0;
+            font-weight: bold;
+            transition-duration: 0.3s;
+        }
+
+        .title:hover {
+            color: #4f29f0;
+        }
+        .title:hover span{
+            color:black;
+        }
+        .container{
+            text-align: center;
+            display: flex;
+            gap:1rem;
+            padding-top: 2rem;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #b4a3ff;
+        }
+        .container > div{
+            width:60%;
+        }
+        @media screen and (max-width:600px) {
+            .header{
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            .container > div{
+                width:95%
+            }
+            .container{
+            }
+
+        }
+        .welcome-msg{
+            font-size: 2.8rem;
+        }
+
+        .title{
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: black;
+            transition-duration: 0.3s;
+        }
+        .welcome-container{
+            padding: 1.6rem 2rem;
+            background-color: white;
+            margin: 1rem 1rem;
+            border-radius: 2rem;
+            text-align: start;
+            display: flex;
+            flex-direction: column;
+        }
+        .welcome-title{
+            text-decoration: none;
+            color: black;
+            transition-duration: 0.3s;
+        }
+        .welcome-title span {
+            color: #4f29f0;
+            transition-duration: 0.5s;
+        }
+        .welcome-title:hover{
+            color:#4f29f0;
+        }
+        .welcome-title:hover span{
+            color:black;
+        }
+        .welcome-par{
+            font-size: 1.6rem;
+            color: black;
+        }
+        .username{
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        @media screen and (max-width: 500px){
+            .header-end{
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>This isn't a secured view.</h1>
-<a href="/secured" class="btn btn-primary">Check the secure page</a>
+<header class="header">
+    <a href="/" class="title">Do<span>It!</span></a>
+
+    <div class="header-end">
+        <a class="username" href="http://localhost:8080/realms/pfsrealm/account/#/personal-info" th:text="${username}"></a>
+        <a th:if="${username!=null}" href="/logout" class="logout-btn">Logout</a>
+        <a th:if="${username==null}" href="/secured" class="logout-btn">Login</a>
+    </div>
+
+</header>
+
+
+<div class="container">
+    <div class="welcome-container">
+        <span class="welcome-msg">Welcome to <a href="/" class="welcome-title">Do<span>It!</span></a></span>
+        <p class="welcome-par">
+            DoIt is an intuitive and practical application for organizing and scheduling tasks!
+            <b>Create, search, schedule</b> and <b>cross off</b> tasks easily using an interactive and easy to use interface.
+        </p>
+        <a class="explore-btn" href="/secured">Explore</a>
+    </div>
+</div>
+</body>
+
+</div>
+
+<!--<a th:href="@{/logout}" class="btn btn-primary">Logout</a>-->
 </body>
 </html>

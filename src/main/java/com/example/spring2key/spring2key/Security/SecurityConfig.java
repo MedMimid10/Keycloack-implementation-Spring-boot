@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -37,8 +38,13 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter { // Ex
     //method configures the HTTP security. It specifies that the /secured/** URL pattern requires authentication and all other requests are permitted
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http); // Configures HTTP security with Keycloak's default settings
-        http.authorizeRequests() // Configures authorization for HTTP requests
+        http
+                .cors()
+                .and()
+                .authorizeRequests() // Configures authorization for HTTP requests
                 .antMatchers("/secured/**").authenticated() // Requires authentication for URLs that start with "/secured/"
+                .antMatchers("/task/**").authenticated()
+                .antMatchers("/").permitAll()
                 .anyRequest().permitAll(); // Allows all other requests to be made without authentication
 
 
@@ -50,6 +56,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter { // Ex
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
+
 
 }
 

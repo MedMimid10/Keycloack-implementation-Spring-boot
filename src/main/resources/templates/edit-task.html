@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>DoIt!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@100;400;500;700;900&display=swap');
+    :root{
+      font-family: "Montserrat"
+    }
+    body{
+      background-color: #b4a3ff;
+      margin: 0;
+    }
+    .checkbox-container {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .checkbox-container input {
+      display: none;
+    }
+
+    .checkbox-container svg {
+      overflow: visible;
+      height: 36px;
+      width: 36px;
+    }
+
+    .path {
+      fill: none;
+      stroke: white;
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+      stroke-dasharray: 241 9999999;
+      stroke-dashoffset: 0;
+    }
+
+    .checkbox-container input:checked ~ svg .path {
+      stroke-dasharray: 70.5096664428711 9999999;
+      stroke-dashoffset: -262.2723388671875;
+    }
+
+    input {
+      font-family: "Montserrat",serif;
+      font-synthesis: weight;
+    }
+    section.add-form{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    input:focus {
+      outline: none;
+    }
+    .input-task {
+      font-size: 1rem;
+      padding: 1rem 2rem;
+      width: 15rem;
+      border: none;
+      border-radius: 2rem;
+      transition: width ease-in-out 0.5s;
+    }
+    .datepicker{
+      font-size:1.3rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 3rem;
+      color: grey;
+
+    }
+    .grid{
+      display: grid;
+    }
+    .add-form>button{
+      font-family: "Montserrat",serif;
+      font-synthesis: weight;
+      margin-left: -3rem;
+      border: none;
+      background-color: #4f29f0;
+      color: white;
+      padding: 0.7rem 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+
+    }
+    .add-form>button:hover{
+      background-color: #3c21b2;
+    }
+    .header{
+      display: flex;
+      padding: 1.2rem 2rem;
+      gap:1.2rem;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      position:sticky;
+      top:0;
+      z-index: 999;
+      border-radius: 0 0 1rem 1rem;
+      box-shadow: 0px 6px 38px -4px rgba(0,0,0,0.67);
+      -webkit-box-shadow: 0px 6px 38px -4px rgba(0,0,0,0.67);
+      -moz-box-shadow: 0px 6px 38px -4px rgba(0,0,0,0.67);
+    }
+    .search-form:hover .search-input{
+      border: solid #4f29f0 2px;
+    }
+    .search-form:hover .search-button{
+      background-color: #4f29f0;
+    }
+    .search-form{
+      align-items: center;
+      justify-self: center;
+
+    }
+    .search-input{
+      font-size: 1rem;
+      padding: 0.5rem 2.5rem 0.5rem 0.8rem;
+      width: 15rem;
+      border: solid grey 2px;
+      border-radius: 2rem;
+      transition-duration: 1s;
+    }
+    .search-form button{
+      font-family: "Montserrat",serif;
+      font-synthesis: weight;
+      margin-left: -4.4rem;
+      border: none;
+      background-color: grey;
+      color: white;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4rem;
+      cursor: pointer;
+      transition-duration: 1s;
+    }
+    .header-end{
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .logout-btn{
+      background-color: #b4a3ff;
+      text-decoration: none;
+      color:white;
+      padding: 0.6rem 2rem;
+      border-radius: 1.5rem;
+      transition-duration: 0.3s;
+    }
+    .logout-btn:hover{
+      background-color: #7668b3;
+      font-weight: bold;
+    }
+
+
+    .title > span{
+      color: #4f29f0;
+      font-weight: bold;
+      transition-duration: 0.3s;
+    }
+
+    .title:hover {
+      color: #4f29f0;
+    }
+    .title:hover span{
+      color:black;
+    }
+
+    .container{
+      text-align: center;
+      display: flex;
+      gap:1rem;
+      padding-top: 2rem;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #b4a3ff;
+    }
+
+    @media screen and (max-width:600px) {
+      .header {
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+    }
+
+
+
+    .title{
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: black;
+      transition-duration: 0.3s;
+    }
+    .username{
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+    }
+      .title > span{
+        color: #4f29f0;
+        font-weight: bold;
+        transition-duration: 0.3s;
+      }
+
+      .title:hover {
+        color: #4f29f0;
+      }
+      .title:hover span{
+        color:black;
+      }
+      #input-name{
+        font-size: 1.5rem;
+        border: none;
+        padding: 1rem 1.2rem;
+        border-radius: 2.3rem;
+      }
+      .task-info{
+        display: flex;
+        align-items: center;
+        gap:2.2rem;
+        justify-content: center;
+      }
+      .grid{
+        gap: 1.2rem;
+      }
+      .save-btn{
+        font-family: "Montserrat",serif;
+        background-color: #4f29f0;
+        color: white;
+        width: fit-content;
+        justify-self: center;
+        border-radius: 1.8rem;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        font-size: 1.8rem;
+        margin-top: 1.5rem;
+        cursor: pointer;
+        transition-duration: 0.3s;
+      }
+      .save-btn:hover{
+        background-color: #3c21b2;
+      }
+
+    @media screen and (max-width: 500px){
+      .header-end{
+        flex-wrap: wrap;
+      }
+
+      #input-name{
+        font-size: 1rem;
+      }
+      .checkbox-container svg{
+        height: 28px;
+        width: 28px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<header class="header">
+  <a href="/" class="title">Do<span>It!</span></a>
+
+  <div class="header-end">
+    <section class="search-form">
+      <input type="text" class="search-input" name="" id="search-input" placeholder="Search for a task">
+      <button class="search-button" onclick="search()" type="submit">Search</button>
+    </section>
+    <a href="http://localhost:8080/realms/pfsrealm/account/#/personal-info" class="username" th:text="${username}"></a>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </div>
+
+</header>
+
+
+<div class="container">
+  <h1>Edit task: </h1>
+  <div class="grid">
+  <div class="task-info">
+    <label class="checkbox-container">
+      <input type="checkbox" th:checked="${task.checked}" th:onclick="toggleTask(/*[[${task.id}]]*/)">
+      <svg viewBox="0 0 64 64" height="2em" width="2em">
+        <path d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16" pathLength="575.0541381835938" class="path"></path>
+      </svg>
+    </label>
+    <input type="text" id="input-name" th:value="${task.name}" placeholder="Name of the task">
+
+  </div>
+    <input type="datetime-local" id="datepicker"  th:value="${task.date}" class="datepicker" >
+    <button class="save-btn" th:onclick="save(/*[[${task.id}]]*/)" >Save</button>
+  </div>
+
+</div>
+</body>
+
+</div>
+<script th:inline="javascript">
+  let inputName = document.getElementById("input-name")
+  let datepicker = document.getElementById("datepicker")
+  async function toggleTask(id) {
+    try{
+      const response = await fetch("http://localhost:8081/toggle-task/"+id)
+      console.log(response)
+
+    }catch(e){
+      console.log(e)
+    }
+  }
+  async function save(id){
+    let name = inputName.value
+    let date = datepicker.value
+    try{
+      const response = await fetch("http://localhost:8081/edit-task/"+id+"/"+name+"/date/"+date)
+      console.log(response)
+      window.location.href = "/secured"
+
+    }catch(e){
+      console.log(e)
+    }
+
+
+
+  }
+
+</script>
+<!--<a th:href="@{/logout}" class="btn btn-primary">Logout</a>-->
+</body>
+</html>
