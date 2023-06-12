@@ -13,6 +13,6 @@ FROM amazoncorretto:19-alpine3.17-jdk
 ## ENV PORT=8080
 #EXPOSE 8090
 #ENTRYPOINT ["java","-jar","app.jar"]
-COPY --from=build /home/app/target/livraison-app-backend-0.0.1-SNAPSHOT.jar /usr/local/lib/app.jar
+COPY --from=build /home/app/target/spring2key-0.0.1-SNAPSHOT.jar /usr/local/lib/app.jar
 EXPOSE 8090
 ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
